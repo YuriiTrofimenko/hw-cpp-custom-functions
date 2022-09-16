@@ -1,43 +1,52 @@
 #include <iostream>
 #include <vector>
+#include <Windows.h>
 using namespace std;
 
+enum order {ASC, DESC};
 
-/*** РџР РћРўРћРўРРџР« Р¤РЈРќРљР¦РР™ ***/ 
+/*** ПРОТОТИПЫ ФУНКЦИЙ ***/
 
-int findIndexOfInt(int x, int integers[]); 
-// Р’РѕР·РІСЂР°С‰Р°РµС‚ РёРЅРґРµРєСЃ РїРµСЂРІРѕРіРѕ РїРѕРїР°РІС€РµРіРѕСЃСЏ РІ РјР°СЃСЃРёРІРµ С‡РёСЃР»Р°, СЂР°РІРЅРѕРіРѕ Р·Р°РґР°РЅРЅРѕРјСѓ
+int findIndexOfInt(int x, int integers[]);
+// Возвращает индекс первого попавшегося в массиве числа, равного заданному
 
-int findIndexOfInt(int x, int integers[], int count[]); 
-// Р’РѕР·РІСЂР°С‰Р°РµС‚ РёРЅРґРµРєСЃ РїРµСЂРІРѕРіРѕ РїРѕРїР°РІС€РµРіРѕСЃСЏ РІ РјР°СЃСЃРёРІРµ С‡РёСЃР»Р°, СЂР°РІРЅРѕРіРѕ Р·Р°РґР°РЅРЅРѕРјСѓ, Рё СЃРѕС…СЂР°РЅСЏРµС‚ РєРѕР»РёС‡РµСЃС‚РІРѕ СЃРѕРІРїР°РґРµРЅРёР№ РІ РїРµСЂРІС‹Р№ СЌР»РµРјРµРЅС‚ СЃРїРёСЃРєР°
+int findIndexOfInt(int x, int integers[], int count[]);
+// Возвращает индекс первого попавшегося в массиве числа, равного заданному, и сохраняет количество совпадений в первый элемент списка
 
-void intBubbleSort(int integers[], int size); 
-// РЎРѕСЂС‚РёСЂСѓРµС‚ СЌР»РµРјРµРЅС‚С‹ РІ РјР°СЃСЃРёРІРµ (РїРµСЂРµРєР»СЋС‡Р°С‚РµР»СЊ РІРЅСѓС‚СЂРё!)
+void intBubbleSort(int integers[], int size, order myOrder = order::ASC);
+// Сортирует элементы в массиве (переключатель внутри!)
 
 void arrayInput(int integers[]);
-// Р’РІРѕРґ СЌР»РµРјРµРЅС‚РѕРІ РІ РјР°СЃСЃРёРІ СЃ РєРѕРЅСЃРѕР»Рё
+// Ввод элементов в массив с консоли
 
 void arrayPrint(int integers[]);
-// Р’С‹РІРѕРґ СЌР»РµРјРµРЅС‚РѕРІ РјР°СЃСЃРёРІР° РЅР° СЌРєСЂР°РЅ
+// Вывод элементов массива на экран
 
-
-
-
-/*** РўР•Р›Рћ РџР РћР“Р РђРњРњР« ***/
+/*** ТЕЛО ПРОГРАММЫ ***/
 
 int main()
 {
-	int ints[7]; // СЃРѕР·РґР°РЅРёРµ РјР°СЃСЃРёРІР°
+    setlocale(LC_ALL, "Russian");
+    SetConsoleCP(1251);
+    SetConsoleOutputCP(1251);
+    cout << "*** Сортировка целых чисел ***" << endl;
+	int ints[7]; // создание массива
 	arrayInput(ints);
-
-	intBubbleSort(ints, 7);
+    cout << "сортировать по убыванию(д - да/н - нет)?" << endl;
+    char descOrderResponse = 'н';
+    cin >> descOrderResponse;
+    descOrderResponse == 'н' ? intBubbleSort(ints, 7) : intBubbleSort(ints, 7, order::DESC);
+    /* if (descOrderResponse == 'н') {
+        cout << order::ASC << endl;
+    } else if (descOrderResponse == 'д') {
+        cout << order::DESC << endl;
+    } */
 	arrayPrint(ints);
-	
-	
-	int toFind = 20; // РІРІРѕРґ С‡РёСЃР»Р° РґР»СЏ РїРѕРёСЃРєР°
 
-    int count[] = { 0 }; // СЃРѕР·РґР°РЅРёРµ РјР°СЃСЃРёРІР° РґР»СЏ СЃРѕС…СЂР°РЅРµРЅРёСЏ С‚СѓРґР° РєРѕР»-РІР° СЃРѕРІРїР°РґРµРЅРёР№
-	
+	int toFind = 20; // ввод числа для поиска
+
+    int count[] = { 0 }; // создание массива для сохранения туда кол-ва совпадений
+
     /*try
     {
         cout << findIndexOfInt(toFind, ints, count) << "\n";
@@ -49,12 +58,9 @@ int main()
     */
 }
 
+/*** ФУНКЦИИ ***/
 
-
-
-/*** Р¤РЈРќРљР¦РР ***/
-
-int findIndexOfInt(int x, int integers[]) // Р’РѕР·РІСЂР°С‰Р°РµС‚ РёРЅРґРµРєСЃ РїРµСЂРІРѕРіРѕ РїРѕРїР°РІС€РµРіРѕСЃСЏ РІ РјР°СЃСЃРёРІРµ С‡РёСЃР»Р°, СЂР°РІРЅРѕРіРѕ Р·Р°РґР°РЅРЅРѕРјСѓ 
+int findIndexOfInt(int x, int integers[]) // Возвращает индекс первого попавшегося в массиве числа, равного заданному
 {
     int i = 0;
     while (i < 7)
@@ -68,8 +74,7 @@ int findIndexOfInt(int x, int integers[]) // Р’РѕР·РІСЂР°С‰Р°РµС‚ РёРЅРґРµРєСЃ Р
 //    throw exception("Item not found!");
 }
 
-
-int findIndexOfInt(int x, int integers[], int count[]) // Р’РѕР·РІСЂР°С‰Р°РµС‚ РёРЅРґРµРєСЃ РїРµСЂРІРѕРіРѕ РїРѕРїР°РІС€РµРіРѕСЃСЏ РІ РјР°СЃСЃРёРІРµ С‡РёСЃР»Р°, СЂР°РІРЅРѕРіРѕ Р·Р°РґР°РЅРЅРѕРјСѓ, Рё СЃРѕС…СЂР°РЅСЏРµС‚ РєРѕР»РёС‡РµСЃС‚РІРѕ СЃРѕРІРїР°РґРµРЅРёР№ РІ РїРµСЂРІС‹Р№ СЌР»РµРјРµРЅС‚ СЃРїРёСЃРєР°
+int findIndexOfInt(int x, int integers[], int count[]) // Возвращает индекс первого попавшегося в массиве числа, равного заданному, и сохраняет количество совпадений в первый элемент списка
 {
     int i = 0;
     int counter = 0;
@@ -81,8 +86,8 @@ int findIndexOfInt(int x, int integers[], int count[]) // Р’РѕР·РІСЂР°С‰Р°РµС‚ Р
         }
     }
     count[0] = counter;
-    
-    for (int i = 0; i < 7; i++) 
+
+    for (int i = 0; i < 7; i++)
     {
         if (integers[i] == x)
         {
@@ -91,74 +96,40 @@ int findIndexOfInt(int x, int integers[], int count[]) // Р’РѕР·РІСЂР°С‰Р°РµС‚ Р
     }
 }
 
-
-void intBubbleSort(int integers[], int size) // РЎРѕСЂС‚РёСЂСѓРµС‚ СЌР»РµРјРµРЅС‚С‹ РІ РјР°СЃСЃРёРІРµ
+void intBubbleSort(int integers[], int size, order myOrder /* ПЕРЕКЛЮЧАТЕЛЬ */) // Сортирует элементы в массиве
 {
-	enum order {ASC, DESC};
-	order myOrder = order::ASC; // РџР•Р Р•РљР›Р®Р§РђРўР•Р›Р¬
-	
-	if (myOrder == DESC){
-		bool sortCheck = false;
-		while (sortCheck == false)
-		{
-			sortCheck = true;
-			for (int i = 0; i < size - 1; i++)
-		    {
-    	       	if (integers[i] < integers[i + 1])
-        	   	{
-	           	    int temp = integers[i];
-               		integers[i] = integers[i + 1];
-	               	integers[i + 1] = temp;
-    	       	}
-        	}
-			for (int i = 0; i < size - 1; i++)
-			{
-				if (integers[i] < integers[i + 1])
-				{
-					sortCheck = false;
-				};
-			}
-		}
-	}
-	
-	if (myOrder == ASC){
-		bool sortCheck = false;
-		while (sortCheck == false)
-		{
-			sortCheck = true;
-			for (int i = 0; i < size - 1; i++)
-		    {
-    	       	if (integers[i] > integers[i + 1])
-        	   	{
-	           	    int temp = integers[i];
-               		integers[i] = integers[i + 1];
-	               	integers[i + 1] = temp;
-    	       	}
-        	}
-			for (int i = 0; i < size - 1; i++)
-			{
-				if (integers[i] > integers[i + 1])
-				{
-					sortCheck = false;
-				};
-			}
-		}
-	}
+    bool sortCheck = false;
+    while (sortCheck == false)
+    {
+        sortCheck = true;
+        for (int i = 0; i < size - 1; i++)
+        {
+            int comparisonResult =
+                myOrder == order::ASC
+                    ? integers[i] - integers[i + 1]
+                    : integers[i + 1] - integers[i];
+            if (comparisonResult > 0)
+            {
+                int temp = integers[i];
+                integers[i] = integers[i + 1];
+                integers[i + 1] = temp;
+                sortCheck = false;
+            }
+        }
+    }
 }
 
-
-
-void arrayInput(int integers[]) // Р’РІРѕРґ СЌР»РµРјРµРЅС‚РѕРІ РІ РјР°СЃСЃРёРІ СЃ РєРѕРЅСЃРѕР»Рё
+void arrayInput(int integers[]) // Ввод элементов в массив с консоли
 {
-	cout << "Enter the values for the array one by one." << endl;
+	cout << "Вводите целые числа, и после каждого нажимайте клавишу Ввод" << endl;
 	for (int i = 0; i < 7; i++)
 	{
-		cout << "Value " << i + 1 << " out of 7: ";
+		cout << "Число номер " << i + 1 << " из 7: ";
 		cin >> integers[i];
 	}
 }
 
-void arrayPrint(int integers[]) // Р’С‹РІРѕРґ СЌР»РµРјРµРЅС‚РѕРІ РјР°СЃСЃРёРІР° РЅР° СЌРєСЂР°РЅ
+void arrayPrint(int integers[]) // Вывод элементов массива на экран
 {
 	cout << "[ ";
 	for (int i = 0; i < 7; i++)
