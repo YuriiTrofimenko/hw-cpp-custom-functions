@@ -32,6 +32,9 @@ int main()
     cout << "*** Сортировка целых чисел ***" << endl;
 	int ints[7]; // создание массива
 	arrayInput(ints);
+	// TODO изменить логику опроса пользователя так, чтобы в случае ответа
+	// на вопрос о направлении сортировки, не равного д или н,
+	// вопрос задавался заново до бесконечности
     cout << "сортировать по убыванию(д - да/н - нет)?" << endl;
     char descOrderResponse = 'н';
     cin >> descOrderResponse;
@@ -98,21 +101,30 @@ int findIndexOfInt(int x, int integers[], int count[]) // Возвращает индекс перв
 
 void intBubbleSort(int integers[], int size, order myOrder /* ПЕРЕКЛЮЧАТЕЛЬ */) // Сортирует элементы в массиве
 {
+    // флаг "упорядоченный ли массив" - предполагаем, что нет
     bool sortCheck = false;
-    while (sortCheck == false)
+    // пока массив не упорядоченный
+    while (!sortCheck)
     {
+        // предполагаем, что упорядоченный, и тут же проверяем это,
+        // сравнивая попарно все рядом расположенные элементы
         sortCheck = true;
         for (int i = 0; i < size - 1; i++)
         {
+            // результат сравнения двух рядом расположенных элементов
             int comparisonResult =
                 myOrder == order::ASC
                     ? integers[i] - integers[i + 1]
                     : integers[i + 1] - integers[i];
+            // если два соседние элемента расположены не в желаемом порядке
             if (comparisonResult > 0)
             {
+                // 1 переставляем их местами
                 int temp = integers[i];
                 integers[i] = integers[i + 1];
                 integers[i + 1] = temp;
+                // 2 отмечаем себе, что предположение не сбылось - массив еще не был упорядочен,
+                // раз пришлось переставлять местами ходя бы пару элементов
                 sortCheck = false;
             }
         }
