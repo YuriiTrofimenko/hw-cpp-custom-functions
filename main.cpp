@@ -37,7 +37,9 @@ int main()
 	// вопрос задавался заново до бесконечности
     cout << "сортировать по убыванию(д - да/н - нет)?" << endl;
     char descOrderResponse = 'н';
-    cin >> descOrderResponse;
+    do {
+        cin >> descOrderResponse;
+    } while (descOrderResponse != 'д' && descOrderResponse != 'н');
     descOrderResponse == 'н' ? intBubbleSort(ints, 7) : intBubbleSort(ints, 7, order::DESC);
     /* if (descOrderResponse == 'н') {
         cout << order::ASC << endl;
